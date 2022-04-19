@@ -3,7 +3,6 @@ package com.example.quizproject.validator
 import com.example.quizproject.dto.AnswerDTO
 import com.example.quizproject.dto.MultipleAnswerDTO
 import com.example.quizproject.dto.SingleAnswerDTO
-import org.springframework.util.StringUtils.hasText
 import org.springframework.validation.Errors
 import org.springframework.validation.ValidationUtils
 import org.springframework.validation.Validator
@@ -21,12 +20,12 @@ class AnswerValidator: Validator {
         if (target.questionNumber <= 0) errors.rejectValue("questionNumber", "questionNumber.positive")
         when (target) {
             is SingleAnswerDTO -> {
-                if (!hasText(target.answer))
-                    errors.rejectValue("answer", "answer.required")
+                if (target.answer != null && target.answer.isBlank())
+                    errors.rejectValue("answer", "answer.notBlank")
             }
             is MultipleAnswerDTO -> {
-                if (target.answer.any { !hasText(it) })
-                    errors.rejectValue("answer", "answer.required")
+                if (target.answer.any { it.isBlank() })
+                    errors.rejectValue("answer", "answer.notBlank")
             }
         }
     }

@@ -39,7 +39,7 @@ data class SingleAnswerDTO(
     override fun toModel(quiz: Quiz, userId: UUID): Answer<String> {
         val question = getQuestion(quiz)
         if (question !is SingleQuestion) throw IncorrectAnswerFormatException()
-        return SingleAnswer(question, userId, answer)
+        return SingleAnswer(question, answer)
     }
 }
 
@@ -48,6 +48,6 @@ data class MultipleAnswerDTO(override val questionNumber: Int, override val answ
     override fun toModel(quiz: Quiz, userId: UUID): Answer<Set<String>> {
         val question = getQuestion(quiz)
         if (question !is MultipleQuestion) throw IncorrectAnswerFormatException()
-        return MultipleAnswer(question, userId, answer)
+        return MultipleAnswer(question, answer)
     }
 }
