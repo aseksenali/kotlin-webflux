@@ -1,0 +1,28 @@
+spring:
+  data:
+    mongodb:
+      username: test
+      password: example
+      host: 192.168.1.71
+      port: 27017
+      database: test
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: http://192.168.1.71:8080/realms/test/protocol/openid-connect/token/introspect
+          client-id: test-client
+          client-secret: 2DEyac9K7hdn0iWMCGeGXkuyASFfLVTx
+      client:
+        registration:
+          test-client:
+            provider: keycloak
+            client-id: test-client
+            client-secret: 2DEyac9K7hdn0iWMCGeGXkuyASFfLVTx
+            scope:
+              - email
+              - profile
+              - roles
+        provider:
+          keycloak:
+            issuer-uri: http://192.168.1.71:8080/realms/test
