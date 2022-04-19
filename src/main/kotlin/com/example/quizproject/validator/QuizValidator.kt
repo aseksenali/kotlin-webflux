@@ -19,6 +19,15 @@ class QuizValidator(private val questionValidator: QuestionValidator): Validator
                 ValidationUtils.rejectIfEmpty(errors, "title", "title.required")
                 if (target.questions.isEmpty()) errors.rejectValue("questions", "questions.required")
                 if (target.questions.size > 10) errors.rejectValue("questions", "questions.tooMany")
+                if (target
+                        .questions
+                        .groupingBy { it.number }
+                        .eachCount()
+                        .any { it.value != 1 })
+                    errors.rejectValue("questions", "questions.incorrectIndex")
+                val max = target.questions.maxOf { it.number }
+                if (target.questions.size < max)
+                    errors.rejectValue("questions", "questions.incorrectIndex")
                 target.questions.forEachIndexed { index, questionDTO ->
                     errors.pushNestedPath("questions[$index]")
                     ValidationUtils.invokeValidator(questionValidator, questionDTO, errors)

@@ -13,20 +13,20 @@ import com.fasterxml.jackson.annotation.*
 sealed interface Question<T> {
     val number: Int
     val questionText: String
-    val answers: Set<String>
+    val answers: List<String>
     val correctAnswer: T?
 }
 
 data class SingleQuestion(
     override val number: Int,
     override val questionText: String,
-    override val answers: Set<String>,
+    override val answers: List<String>,
     @get:JsonIgnore @set:JsonProperty("correctAnswer") override var correctAnswer: String?
 ) : Question<String>
 
 data class MultipleQuestion(
     override val number: Int,
     override val questionText: String,
-    override val answers: Set<String>,
+    override val answers: List<String>,
     @get:JsonIgnore @set:JsonProperty("correctAnswer") override var correctAnswer: Set<String>?
 ) : Question<Set<String>>

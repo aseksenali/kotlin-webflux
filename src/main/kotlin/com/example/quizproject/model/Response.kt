@@ -15,7 +15,7 @@ data class Response(
     var user: UUID,
     @set:JsonIgnore
     var quiz: Quiz,
-    var givenAnswers: List<Answer<*>>,
+    var givenAnswers: Set<Answer<*>>,
     @CreatedDate
     var timeOfCreation: LocalDateTime? = null,
     var score: Double = givenAnswers.sumOf { it.score } / quiz.questions.size * 100,

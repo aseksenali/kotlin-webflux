@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.*
 sealed interface QuestionDTO<T>: DTO {
     val number: Int
     val questionText: String
-    val answers: Set<String>
+    val answers: List<String>
     val correctAnswer: T?
     @JsonIgnore
     fun toModel(): Question<T>
@@ -25,7 +25,7 @@ sealed interface QuestionDTO<T>: DTO {
 data class SingleQuestionDTO(
     override val number: Int,
     override val questionText: String,
-    override val answers: Set<String>,
+    override val answers: List<String>,
     @get:JsonIgnore @set:JsonProperty("correctAnswer") override var correctAnswer: String?
 
 ) : QuestionDTO<String> {
@@ -37,7 +37,7 @@ data class SingleQuestionDTO(
 data class MultipleQuestionDTO(
     override val number: Int,
     override val questionText: String,
-    override val answers: Set<String>,
+    override val answers: List<String>,
     @get:JsonIgnore @set:JsonProperty("correctAnswer") override var correctAnswer: Set<String>?
 ) : QuestionDTO<Set<String>> {
     override fun toModel(): Question<Set<String>> {
