@@ -18,6 +18,7 @@ class QuizValidator(private val questionValidator: QuestionValidator): Validator
             is QuizDTO.Create -> {
                 ValidationUtils.rejectIfEmpty(errors, "title", "title.required")
                 if (target.questions.isEmpty()) errors.rejectValue("questions", "questions.required")
+                if (target.questions.size > 10) errors.rejectValue("questions", "questions.tooMany")
                 target.questions.forEachIndexed { index, questionDTO ->
                     errors.pushNestedPath("questions[$index]")
                     ValidationUtils.invokeValidator(questionValidator, questionDTO, errors)

@@ -18,11 +18,12 @@ class QuestionValidator : Validator {
             throw IllegalArgumentException("The parameter obj should not be null and must be of type ${QuestionDTO::class.java}")
         ValidationUtils.rejectIfEmpty(errors, "number", "number.required")
         if (target.number <= 0) errors.rejectValue("number", "number.positive")
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "title.required")
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "questionText", "questionText.required")
 
         if (target.answers.isEmpty() || target.answers.any { !hasText(it) })
             errors.rejectValue("answers", "answers.required")
-
+        if (target.answers.size > 5)
+            errors.rejectValue("answers", "answers.tooMany")
         when (target) {
             is SingleQuestionDTO -> {
                 if (target.correctAnswer == null || !hasText(target.correctAnswer))

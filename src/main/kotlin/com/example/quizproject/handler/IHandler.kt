@@ -95,25 +95,7 @@ class IHandler(
         if (quiz.creatorId == userId) throw AuthorizationException("Operation is not possible")
         val responseDTO: ResponseDTO.Solve = request.awaitBodyOrNull() ?: throw RequestBodyNotFoundException()
         validate(responseDTO)
-        val answers = responseDTO.answers.map {
-            val question = quiz.questions.find { question ->
-                question.number == it.questionNumber
-            } ?: throw QuestionNotFoundException(it.questionNumber)
-            when (it) {
-                is SingleAnswerDTO -> {
-                    if (question !is SingleQuestion) throw IncorrectAnswerFormatException()
-                    SingleAnswer(
-                        question, userId, it.answer
-                    )
-                }
-                is MultipleAnswerDTO -> {
-                    if (question !is MultipleQuestion) throw IncorrectAnswerFormatException()
-                    MultipleAnswer(
-                        question, userId, it.answer
-                    )
-                }
-            }
-        }
+        val answers = responseDTO.answers.map { it.toModel(quiz, userId) }
         val response = responseRepository.save(
             Response(
                 UUID.randomUUID(),

@@ -18,5 +18,5 @@ data class Response(
     var givenAnswers: List<Answer<*>>,
     @CreatedDate
     var timeOfCreation: LocalDateTime? = null,
-    var score: Double = givenAnswers.sumOf { it.score },
+    var score: Double = givenAnswers.sumOf { it.score } / quiz.questions.size * 100,
 ) : BasePersistable<UUID>(_id)

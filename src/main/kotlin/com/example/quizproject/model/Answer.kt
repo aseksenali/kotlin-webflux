@@ -17,15 +17,17 @@ sealed interface Answer<T> {
     val question: Question<T>
     val userId: UUID
     var score: Double
-    val answer: T
+    val answer: T?
 }
 
 data class SingleAnswer(
     override val question: SingleQuestion,
     override val userId: UUID,
-    override val answer: String
+    override val answer: String?
 ) : Answer<String> {
-    override var score: Double = if (answer == question.correctAnswer) 1.0 else 0.0
+    override var score: Double = answer?.let {
+        if (answer == question.correctAnswer) 1.0 else -1.0
+    } ?: 0.0
 }
 
 data class MultipleAnswer(
